@@ -991,6 +991,7 @@ addLayer("s", {
                 [
                     "display-text",
                     function() {
+                        if (!hasMilestone('s', 7)) return
                         return "O-Energy gain is always 1 and is only affected by upgrades that directly mention it."
                     }
                 ],
