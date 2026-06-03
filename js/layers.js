@@ -758,7 +758,7 @@ addLayer("s", {
         base = base.times(mult)
 
         if (base.gt(1e100)) base = base.div(base.div(1e100).pow(0.2))
-        if (base.gt("1e1000")) base.div(base.div("1e1000").pow(0.3))
+        if (base.gt("1e1000")) base = base.div(base.div("1e1000").pow(0.3))
 	
         base = base.floor()
         return base
