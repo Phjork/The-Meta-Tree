@@ -248,7 +248,7 @@ function NaNcheck(data) {
 			if (!NaNalert) {
 				clearInterval(interval);
 				NaNalert = true;
-				alert("Invalid value found in player, named '" + item + "'. Please let the creator of this mod know! You can refresh the page, and you will be un-NaNed.")
+				alert("Invalid value found in player, named '" + item + "'. Please DM username 'coolppl_idk' on Discord about the problem. You can refresh the page, and you might be un-NaNed.")
 				return
 			}
 		}
