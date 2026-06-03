@@ -717,8 +717,7 @@ addLayer("s", {
         bhtier: new Decimal(0),
         dm: new Decimal(0),
         dmgain : new Decimal(0),
-        softcap: new Decimal(1),
-    }},
+	}},
     color: "#bd38ff",
     requires: new Decimal(0.001), // Can be a function that takes requirement increases into account
     resource: "stardust", // Name of prestige currency
@@ -758,12 +757,9 @@ addLayer("s", {
 
         base = base.times(mult)
 
-        player[this.layer].softcap = new Decimal(1)
-        if (base.gt(1e100)) player[this.layer].softcap = base.div(1e100).pow(0.2)
-        if (base.div(player[this.layer].softcap).gt("1e1000")) player[this.layer].softcap = player[this.layer].softcap.times(base.div(player[this.layer].softcap).div("1e1000").pow(0.3))
-
-        if (base.gt(1e100)) base = base.div(player[this.layer].softcap)
-
+        if (base.gt(1e100)) base = base.div(base.div(1e100).pow(0.2))
+        if (base.gt("1e1000")) base.div(base.div("1e1000").pow(0.3))
+	
         base = base.floor()
         return base
     },
@@ -875,7 +871,7 @@ addLayer("s", {
                     "display-text",
                     function() {
                         if (getResetGain(this.layer).lt(1e100)) return
-                        return "You are pushing the limits of this universe! Stardust gain is divided by /"+format(player[this.layer].softcap)
+                        return "You are pushing the limits of this universe! Stardust gain is softcapped after 1e100."
                     }
                 ],
                 [
