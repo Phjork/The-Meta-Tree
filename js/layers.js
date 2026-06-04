@@ -212,7 +212,7 @@ addLayer("p", {
             },
             display() { return "Increase amount of effective upgrade 11 by 1.<br>Cost: "+format(this.cost())+" prestige points.<br>Bought: "+format(getBuyableAmount(this.layer, this.id))+"<br>Effect: +"+format(buyableEffect(this.layer, this.id)) },
             canAfford() {
-                return player[this.layer].points.gte(this.cost()) && !inChallenge('a', 12) && !inChallenge('s', 22)
+                return player[this.layer].points.gte(this.cost()) && !inChallenge('a', 12) && !inChallenge('s', 22) && !hasMilestone('a', 7)
             },
             buy() {
                 if (!hasUpgrade('s', 12)) {
@@ -292,7 +292,7 @@ addLayer("p", {
             },
             display() { return "Increase amount of effective upgrade 15 by 1.<br>Cost: "+format(this.cost())+" prestige points.<br>Bought: "+format(getBuyableAmount(this.layer, this.id))+"<br>Effect: +"+format(buyableEffect(this.layer, this.id)) },
             canAfford() {
-                return player[this.layer].points.gte(this.cost()) && !inChallenge('a', 12) && !inChallenge('s', 22)
+                return player[this.layer].points.gte(this.cost()) && !inChallenge('a', 12) && !inChallenge('s', 22) && !hasMilestone('a', 7)
             },
             buy() {
                 if (!hasUpgrade('s', 12)) {
@@ -372,7 +372,7 @@ addLayer("p", {
             },
             display() { return "Increase amount of effective upgrade 23 by 1.<br>Cost: "+format(this.cost())+" prestige points.<br>Bought: "+format(getBuyableAmount(this.layer, this.id))+"<br>Effect: +"+format(buyableEffect(this.layer, this.id))},
             canAfford() {
-                return player[this.layer].points.gte(this.cost()) && !inChallenge('a', 12) && !inChallenge('s', 22)
+                return player[this.layer].points.gte(this.cost()) && !inChallenge('a', 12) && !inChallenge('s', 22) && !hasMilestone('a', 7)
             },
             buy() {
                 if (!hasUpgrade('s', 12)) {
@@ -845,6 +845,32 @@ addLayer("s", {
         player[this.layer].cscore = player[this.layer].cscore.sub(new Decimal(1.1).pow(player[this.layer].bhtier.sub(1)).mul(100).mul(player[this.layer].bhtier.min(1)))
         if (inChallenge('s', 31)) player[this.layer].cscore = new Decimal(0)
         if (player[this.layer].cscore.lt(0)) player[this.layer].cscore = new Decimal(0)
+
+		// Gain score on cosmic challenges
+        if (inChallenge('s', 11)) {
+        score = player.points.add(1).log(10).div(5).pow(0.8)
+        if (score.gt(player[this.layer].score[0])) player[this.layer].score[0] = score
+        }
+        if (inChallenge('s', 12)) {
+        score = player.p.points.add(1).log(2).pow(0.5)
+        if (score.gt(player[this.layer].score[1])) player[this.layer].score[1] = score
+        }
+        if (inChallenge('s', 21)) {
+        score = player.a.knowledge.add(1).log(10).div(2)
+        if (score.gt(player[this.layer].score[2])) player[this.layer].score[2] = score
+        }
+        if (inChallenge('s', 22)) {
+        score = getResetGain(this.layer).add(1).log(10).times(5)
+        if (score.gt(player[this.layer].score[3])) player[this.layer].score[3] = score
+        }
+        if (inChallenge('s', 31)) {
+        score = score = player.points.add(1).log(10).div(5).pow(0.8).add(player.p.points.add(1).log(2).pow(0.5).add(player.a.knowledge.add(1).log(10).div(2).add(getResetGain(this.layer).add(1).log(10).times(5)))).div(4)
+        if (score.gt(player[this.layer].score[4])) player[this.layer].score[4] = score
+        }
+        if (inChallenge('s', 32)) {
+        score = score = player.points.add(1).log(10).div(5).pow(0.8).add(player.p.points.add(1).log(2).pow(0.5).add(player.a.knowledge.add(1).log(10).div(2).add(getResetGain(this.layer).add(1).log(10).times(5)))).div(4)
+        if (score.gt(player[this.layer].score[5])) player[this.layer].score[5] = score
+        }
 
         // Dark matter gain calculation
         player[this.layer].dmgain = new Decimal(1.3).pow(player[this.layer].bhtier.sub(1)).mul(player[this.layer].cscore.max(2900).sub(2900).pow(0.5).add(1))
@@ -1505,10 +1531,6 @@ addLayer("s", {
             goal() {
                 return new Decimal(1).div(0);
             },
-            onExit() {
-                score = player.points.log(10).div(5).pow(0.8)
-                if (score.gt(player[this.layer].score[0])) player[this.layer].score[0] = score
-            }
         },
         12: {   
             name: "Whimsical Orange",
@@ -1518,10 +1540,6 @@ addLayer("s", {
             goal() {
                 return new Decimal(1).div(0);
             },
-            onExit() {
-                score = player.p.points.log(2).pow(0.5)
-                if (score.gt(player[this.layer].score[1])) player[this.layer].score[1] = score
-            }
         },
         21: {
             name: "Elegant Yellow",
@@ -1531,10 +1549,6 @@ addLayer("s", {
             goal() {
                 return new Decimal(1).div(0);
             },
-            onExit() {
-                score = player.a.knowledge.log(10).div(2)
-                if (score.gt(player[this.layer].score[2])) player[this.layer].score[2] = score
-            }
         },
         22: {
             name: "Pure White",
@@ -1544,10 +1558,6 @@ addLayer("s", {
             goal() {
                 return new Decimal(1).div(0);
             },
-            onExit() {
-                score = getResetGain(this.layer).log(10).times(5)
-                if (score.gt(player[this.layer].score[3])) player[this.layer].score[3] = score
-            }
         },
         31: {
             name: "Classic Cyan",
@@ -1560,10 +1570,6 @@ addLayer("s", {
             unlocked() {
                 return hasMilestone('s', 3)
             },
-            onExit() {
-                score = player.points.log(10).div(5).pow(0.8).add(player.p.points.log(2).pow(0.5).add(player.a.knowledge.log(10).div(2).add(getResetGain(this.layer).log(10).times(5)))).div(4)
-                if (score.gt(player[this.layer].score[4])) player[this.layer].score[4] = score
-            }
         },
         32: {
             name: "Deep Blue",
@@ -1576,10 +1582,6 @@ addLayer("s", {
             unlocked() {
                 return hasUpgrade('s', 45)
             },
-            onExit() {
-                score = player.points.log(10).div(5).pow(0.8).add(player.p.points.log(2).pow(0.5).add(player.a.knowledge.log(10).div(2).add(getResetGain(this.layer).log(10).times(5)))).div(4)
-                if (score.gt(player[this.layer].score[5])) player[this.layer].score[5] = score
-            }
         },
     },
     milestones: {
