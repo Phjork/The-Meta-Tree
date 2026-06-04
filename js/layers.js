@@ -212,40 +212,42 @@ addLayer("p", {
             },
             display() { return "Increase amount of effective upgrade 11 by 1.<br>Cost: "+format(this.cost())+" prestige points.<br>Bought: "+format(getBuyableAmount(this.layer, this.id))+"<br>Effect: +"+format(buyableEffect(this.layer, this.id)) },
             canAfford() {
-                return player[this.layer].points.gte(this.cost()) && !inChallenge('a', 12) && !inChallenge('s', 22) && !hasMilestone('a', 7)
+                return player[this.layer].points.gte(this.cost()) && !inChallenge('a', 12) && !inChallenge('s', 22)
             },
             buy() {
-                if (!hasUpgrade('s', 12)) {
-                player[this.layer].points = player[this.layer].points.sub(this.cost())
-                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
-                }
-                else {
-                    factor = new Decimal(1)
-                    if (hasMilestone('a', 1)) factor = player.a.knowledge.pow(0.3).add(1)
+				if (!hasMilestone('a', 7)) {
+                    if (!hasUpgrade('s', 12)) {
+                        player[this.layer].points = player[this.layer].points.sub(this.cost())
+                        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+                    }
+                    else {
+                        factor = new Decimal(1)
+                        if (hasMilestone('a', 1)) factor = player.a.knowledge.pow(0.3).add(1)
 
-                    points = player[this.layer].points.mul(factor)
-                    logPoints = points.ln().sub(new Decimal(100).ln())
+                        points = player[this.layer].points.mul(factor)
+                        logPoints = points.ln().sub(new Decimal(100).ln())
 
-                    amount = logPoints.div(new Decimal(3).ln())
+                        amount = logPoints.div(new Decimal(3).ln())
 
-                    amount = amount.floor()
+                        amount = amount.floor()
 
-                    low = new Decimal(0)
-                    high = amount
-                    while (low.lt(high)) {
-                        mid = low.add(high).div(2).floor()
-                        logCost = mid.mul(mid.add(3).ln()).add(new Decimal(100).ln())
-                        if (logCost.lte(points.ln())) {
-                            low = mid.add(1)
-                        } else {
-                            high = mid
+                        low = new Decimal(0)
+                        high = amount
+                        while (low.lt(high)) {
+                            mid = low.add(high).div(2).floor()
+                            logCost = mid.mul(mid.add(3).ln()).add(new Decimal(100).ln())
+                            if (logCost.lte(points.ln())) {
+                                low = mid.add(1)
+                            } else {
+                                high = mid
+                            }
                         }
-                    }
-                    amount = low
+                        amount = low
 
-                    if (amount.gt(getBuyableAmount(this.layer, this.id))) {
-                        setBuyableAmount(this.layer, this.id, amount)
-                    }
+                        if (amount.gt(getBuyableAmount(this.layer, this.id))) {
+                            setBuyableAmount(this.layer, this.id, amount)
+                        }
+					}
                 }
             },
             effect() {
@@ -292,40 +294,42 @@ addLayer("p", {
             },
             display() { return "Increase amount of effective upgrade 15 by 1.<br>Cost: "+format(this.cost())+" prestige points.<br>Bought: "+format(getBuyableAmount(this.layer, this.id))+"<br>Effect: +"+format(buyableEffect(this.layer, this.id)) },
             canAfford() {
-                return player[this.layer].points.gte(this.cost()) && !inChallenge('a', 12) && !inChallenge('s', 22) && !hasMilestone('a', 7)
+                return player[this.layer].points.gte(this.cost()) && !inChallenge('a', 12) && !inChallenge('s', 22)
             },
             buy() {
-                if (!hasUpgrade('s', 12)) {
-                player[this.layer].points = player[this.layer].points.sub(this.cost())
-                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
-                }
-                else {
-                    factor = new Decimal(1)
-                    if (hasMilestone('a', 1)) factor = player.a.knowledge.pow(0.3).add(1)
+				if (!hasMilestone('a', 7)) {
+                    if (!hasUpgrade('s', 12)) {
+                        player[this.layer].points = player[this.layer].points.sub(this.cost())
+                        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+                    }
+                    else {
+                        factor = new Decimal(1)
+                        if (hasMilestone('a', 1)) factor = player.a.knowledge.pow(0.3).add(1)
 
-                    points = player[this.layer].points.mul(factor)
-                    logPoints = points.ln().sub(new Decimal(500).ln())
+                        points = player[this.layer].points.mul(factor)
+                        logPoints = points.ln().sub(new Decimal(500).ln())
+    
+                        amount = logPoints.div(new Decimal(5).ln())
 
-                    amount = logPoints.div(new Decimal(5).ln())
+                        amount = amount.floor()
 
-                    amount = amount.floor()
-
-                    low = new Decimal(0)
-                    high = amount
-                    while (low.lt(high)) {
-                        mid = low.add(high).div(2).floor()
-                        logCost = mid.mul(mid.add(5).ln()).add(new Decimal(500).ln())
-                        if (logCost.lte(points.ln())) {
-                            low = mid.add(1)
-                        } else {
-                            high = mid
+                        low = new Decimal(0)
+                        high = amount
+                        while (low.lt(high)) {
+                            mid = low.add(high).div(2).floor()
+                            logCost = mid.mul(mid.add(5).ln()).add(new Decimal(500).ln())
+                            if (logCost.lte(points.ln())) {
+                                low = mid.add(1)
+                            } else {
+                                high = mid
+                            }
                         }
-                    }
-                    amount = low
+                        amount = low
 
-                    if (amount.gt(getBuyableAmount(this.layer, this.id))) {
-                        setBuyableAmount(this.layer, this.id, amount)
-                    }
+                        if (amount.gt(getBuyableAmount(this.layer, this.id))) {
+                            setBuyableAmount(this.layer, this.id, amount)
+                        }
+					}
                 }
             },
             effect() {
@@ -372,42 +376,44 @@ addLayer("p", {
             },
             display() { return "Increase amount of effective upgrade 23 by 1.<br>Cost: "+format(this.cost())+" prestige points.<br>Bought: "+format(getBuyableAmount(this.layer, this.id))+"<br>Effect: +"+format(buyableEffect(this.layer, this.id))},
             canAfford() {
-                return player[this.layer].points.gte(this.cost()) && !inChallenge('a', 12) && !inChallenge('s', 22) && !hasMilestone('a', 7)
+                return player[this.layer].points.gte(this.cost()) && !inChallenge('a', 12) && !inChallenge('s', 22)
             },
             buy() {
-                if (!hasUpgrade('s', 12)) {
-                player[this.layer].points = player[this.layer].points.sub(this.cost())
-                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
-                }
-                else {
-                    points = player[this.layer].points
-                    if (hasUpgrade('s', 23)) points = points.mul(player.a.knowledge.pow(0.3).add(1))
-                    logPoints = points.ln().sub(new Decimal(20).mul(new Decimal(10).ln()))
+				if (!hasMilestone('a', 7)) {
+                    if (!hasUpgrade('s', 12)) {
+                        player[this.layer].points = player[this.layer].points.sub(this.cost())
+                        setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+                    }
+                    else {
+                        points = player[this.layer].points
+                        if (hasUpgrade('s', 23)) points = points.mul(player.a.knowledge.pow(0.3).add(1))
+                        logPoints = points.ln().sub(new Decimal(20).mul(new Decimal(10).ln()))
 
-                    templn = new Decimal(2).ln()
-                    templn2 = new Decimal(1000).ln()
+                        templn = new Decimal(2).ln()
+                        templn2 = new Decimal(1000).ln()
 
-                    discriminant = templn2.pow(2).add(templn.mul(4).mul(logPoints))
-                    amount = discriminant.sqrt().sub(templn2).div(templn.mul(2))
+                        discriminant = templn2.pow(2).add(templn.mul(4).mul(logPoints))
+                        amount = discriminant.sqrt().sub(templn2).div(templn.mul(2))
 
-                    amount = amount.floor()
+                        amount = amount.floor()
 
-                    low = new Decimal(0)
-                    high = amount
-                    while (low.lt(high)) {
-                        mid = low.add(high).div(2).floor()
-                        logCost = mid.mul(templn2.add(mid.mul(templn))).add(new Decimal(20).mul(new Decimal(10).ln()))
-                        if (logCost.lte(points.ln())) {
-                            low = mid.add(1)
-                        } else {
-                            high = mid
+                        low = new Decimal(0)
+                        high = amount
+                        while (low.lt(high)) {
+                            mid = low.add(high).div(2).floor()
+                            logCost = mid.mul(templn2.add(mid.mul(templn))).add(new Decimal(20).mul(new Decimal(10).ln()))
+                            if (logCost.lte(points.ln())) {
+                                low = mid.add(1)
+                            } else {
+                                high = mid
+                            }
                         }
-                    }
-                    amount = low.add(1)
+                        amount = low.add(1)
 
-                    if (amount.gt(getBuyableAmount(this.layer, this.id))) {
-                        setBuyableAmount(this.layer, this.id, amount)
-                    }
+                        if (amount.gt(getBuyableAmount(this.layer, this.id))) {
+                            setBuyableAmount(this.layer, this.id, amount)
+                        }
+					}
                 }
             },
             effect() {
