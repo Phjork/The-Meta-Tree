@@ -45,7 +45,7 @@ function format(decimal, precision = 2, small) {
     try {
     illions = ["K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc"]
     if (decimal.lt(1000)) return decimal.toPrecision(4)
-    if (decimal.lt(1e36)) return format(new Decimal(10).pow(decimal.log(10).add(1e-10).mod(3)))+illions[decimal.log(10).div(3).sub(1).floor()]
+    if (decimal.lt(1e36)) return format(new Decimal(10).pow(decimal.log(10).add(1e-10).mod(3)))+illions[decimal.log(10).add(1e-10).div(3).sub(1).floor()]
     if (decimal.lt("1e1000")) return format(new Decimal(10).pow(decimal.log(10).add(1e-10).mod(1)))+"e"+decimal.log(10).floor()
     if (decimal.log(10).lt("1e1000")) return "e"+format(decimal.log(10).floor())
     return "not supported as of currently"
